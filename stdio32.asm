@@ -74,37 +74,6 @@ strInput:
 	pop 	edx
 	ret
 
-;---------------printIntLn
-; imprime cadena en pantalla, la cadena se recibe en eax
-; y agrega salto de linea en la impresion
-printIntLn:
-        push    eax
-        push    ecx
-
-        add     eax, 48         ; Convertir el numero a ASCII
-        push    eax             ; Colocar contenido de eax en la pila
-        mov     eax, esp        ; eax apunta a la cabeza
-        call    strPrintLn
-
-        pop     eax
-        pop     ecx
-        pop     eax
-        ret
-
-printInt:
-        push    eax
-        push    ecx
-
-        add     eax, 48
-        push    eax
-        mov     eax, esp
-        call    strPrint
-
-        pop     eax
-        pop     ebx
-        pop     ecx
-        ret
-
 upCase:
 
         UCCicle:
@@ -160,6 +129,63 @@ loCase:
 finStr:
         ret
 
+printIntLn:
+        push    eax
+        push    ecx
+        push    ebx
+
+        mov     eax, ebx
+        xor     ecx, ecx
+        call    divideNumber
+        call    printDigit
+
+        mov     eax, 0Ah
+        push    eax
+        mov     eax, esp
+        call    strPrint
+
+	pop     eax
+        pop     ebx
+        pop     ecx
+        pop     eax
+        ret
+
+printInt:
+        push    eax
+        push    ebx
+        push    ecx
+
+	mov     eax, ebx
+        xor     ecx, ecx
+        call    divideNumber
+        call    printDigit
+
+        pop     eax
+        pop     ebx
+        pop     ecx
+        ret
+
+divideNumber:
+        inc     ecx
+        xor     edx, edx
+        mov     ebx, 10
+        idiv    ebx
+        push    edx
+        cmp     eax, 0
+	jne     divideNumber
+
+printDigit:
+        cmp     ecx, 0
+        jz      finStr
+        dec     ecx
+        pop     edx
+        add     edx, 48
+        push    edx
+        mov     eax, esp
+        call    strPrint
+        pop     eax
+        xor     eax, eax
+        jmp     printDigit
 
 ;--------------Quit
 ; cerrar el programa
