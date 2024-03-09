@@ -81,8 +81,65 @@ strInput:
         pop     edx
         ret
 
+; ---------- printInt ---------
+; Imprime enteros en pantalla
+printInt:
+	push    eax
+        push    ecx
+        push    ebx
 
-; --------- Quit ----------
+        mov     ebx, 10
+        xor     ecx, ecx
+        call    divideNumber
+        call    printDigit
+
+        pop     ebx
+        pop     ecx
+        pop     eax
+        ret
+
+; Operacion para obtener el entero de cada digito
+divideNumber:
+        inc     ecx
+        xor     edx, edx			; Limpiar edx
+        idiv    ebx
+        push    edx
+        cmp     eax, 0
+        jne     divideNumber
+
+printDigit:
+        cmp     ecx, 0
+        jz      finStr
+        dec     ecx
+        pop     edx
+        add     edx, 48				; Convertir a ASCII
+        push    edx
+        mov     eax, esp
+        call    strPrint
+        pop     eax
+        xor     eax, eax
+        jmp     printDigit
+
+finStr:
+        ret
+
+; ---------- printInLn ----------
+; Imprime enteros en pantalla y agrega salto de linea
+printIntLn:
+	call 	printInt
+
+        push    eax
+
+        mov     eax, 0Ah
+        push    eax
+        mov     eax, esp
+        call    strPrint
+
+        pop     eax
+        pop     eax
+        ret
+
+; ---------- Quit ----------
 ; Cerrar el programa
 Quit:
 	mov	ebx, 0
