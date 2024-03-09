@@ -61,6 +61,27 @@ strPrintLn:
         pop     eax
         ret
 
+; ---------- strInput ---------
+; Lectura de cadena
+strInput:
+	push    edx
+        push    ecx
+        push    ebx
+        push    eax
+
+        mov     edx, 20
+        mov     ecx, ebx
+        mov     ebx, 0
+        mov     eax, 3
+        int     80h
+
+        pop     eax
+        pop     ebx
+        pop     ecx
+        pop     edx
+        ret
+
+
 ; --------- Quit ----------
 ; Cerrar el programa
 Quit:
