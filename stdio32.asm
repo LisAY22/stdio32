@@ -189,6 +189,25 @@ loCase:
                 inc     esi
                 jmp     LCCicle
 
+; ---------- strInvert ----------
+; Invierte la cadena
+strInvert:
+	start:
+		call	strLen
+		call	strPrint
+		add	esi, eax
+		jmp	ciclo
+	ciclo:
+		mov	al, [esi]
+		cmp	al, 0
+		je	finStr
+		jmp	get
+	get:
+		mov	[edi], al
+		dec	esi
+		inc	edi
+		jmp	ciclo
+
 ; ---------- Quit ----------
 ; Cerrar el programa
 Quit:
