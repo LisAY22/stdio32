@@ -7,12 +7,8 @@
 ; Recibe cadena en eax
 ; Devuelve longitud en eax
 strLen:
-	push	edx
-	push	ecx
 	push 	ebx
-	push 	eax
 
-	pop	eax
 	mov	ebx, eax
 
 sigCaracter:
@@ -25,33 +21,45 @@ finstrLen:
 	sub	eax, ebx
 
 	pop	ebx
-	pop	ecx
-	pop	edx
 
 	ret
 
 ; ---------- strPrint ----------
 ; Imprime cadena en pantalla
-; Recibe cadena en ebx
-; Recibe longitud en eax
+; Recibe cadena en eax
 strPrint:
 	push	edx
 	push 	ecx
 	push 	ebx
 	push 	eax
 
-	pop	eax
+	call	strLen
 	mov	edx, eax
-	pop	ebx
-	mov	ecx, ebx
+	pop	eax
+	mov	ecx, eax
 	mov	ebx, 1
 	mov	eax, 4
 	int	80h
 
+	pop	ebx
 	pop	ecx
 	pop	edx
 
 	ret
+
+; ---------- strPrintLn ----------
+; Imprimir cadena en pantalla y agrega salto de linea
+; Recibe cadena en eax
+strPrintLn:
+	call	strPrint
+	push	eax
+	mov	eax, 0Ah
+	push    eax
+        mov     eax, esp				; esp - apuntador de pila - cabeza
+        call    strPrint
+        pop     eax
+        pop     eax
+        ret
 
 ; --------- Quit ----------
 ; Cerrar el programa
