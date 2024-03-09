@@ -1,0 +1,44 @@
+     1                                  ; Manejo de valores de coma flotante
+     2                                  ; Creador: lis
+     3                                  ; Fecha: 20240304
+     4                                  ; Compilar: nasm -f elf64 flotante.asm -l flotante.lst
+     5                                  ; Link: gcc -m64 flotante.o -o flotante -no-pie
+     6                                  
+     7                                  extern printf
+     8                                  
+     9                                  SECTION .data
+    10 00000000 6E861BF0F9210940        	pi:		dq	3.14159
+    11 00000008 0000000000001440        	diametro:	dq	5.0
+    12 00000010 43203D20642ACF8020-     	format:		db	"C = d*π = %f * %f = %f", 10, 0
+    12 00000019 3D202566202A202566-
+    12 00000022 203D2025660A00     
+    13                                  
+    14                                  SECTION .bss
+    15 00000000 ????????????????        	c:	resq	1
+    16                                  
+    17                                  SECTION .text
+    18                                  	global	main
+    19                                  
+    20                                  main:
+    21 00000000 55                      	push 	rbp
+    22 00000001 DD0425[08000000]        	fld	qword [diametro]		; carga raiz al registro ST0
+    23 00000008 DC0C25[00000000]        	fmul	qword [pi]			; diametro * pi
+    24 0000000F DD1C25[00000000]        	fstp	qword[c]			; guarda el resultado del ST0 en c
+    25                                  
+    26                                  	;---------Llamada a printf-------------
+    27 00000016 48BF-                   	mov	rdi,format			; cadena con formato de impresion
+    27 00000018 [1000000000000000] 
+    28 00000020 F30F7E0425-             	movq	xmm0,qword [pi]
+    28 00000025 [00000000]         
+    29 00000029 F30F7E0C25-             	movq	xmm1,qword [diametro]
+    29 0000002E [08000000]         
+    30 00000032 F30F7E1425-             	movq	xmm2,qword [c]
+    30 00000037 [00000000]         
+    31 0000003B B803000000              	mov	rax, 3
+    32 00000040 E8(00000000)            	call 	printf
+    33                                  
+    34 00000045 5D                      	pop	rbp
+    35                                  
+    36 00000046 B801000000              	mov	rax, 1
+    37 0000004B 4831DB                  	xor	rbx, rbx
+    38 0000004E CD80                    	int	80h
