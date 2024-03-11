@@ -15,13 +15,13 @@ _start:
         mov     eax, msg1
         call    strPrintLn
 
-        mov     ebx, 2678
+        mov     eax, 2678
         call    printIntLn
 
         mov     eax, msg2
         call    strPrintLn
 
-        mov     ebx, 1500
+        mov     eax, 1500
         call    printInt
 
         call    Quit

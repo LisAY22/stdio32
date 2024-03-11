@@ -13,7 +13,7 @@ strLen:
 
 sigCaracter:
 	cmp	byte[eax], 0
-	jz	finstrLen
+	jz	finstrLen				; jump if zero
 	inc	eax
 	jmp 	sigCaracter
 
@@ -102,10 +102,10 @@ printInt:
 divideNumber:
         inc     ecx
         xor     edx, edx			; Limpiar edx
-        idiv    ebx
+        idiv    ebx				; eax/ebx
         push    edx
         cmp     eax, 0
-        jne     divideNumber
+        jne     divideNumber			; jump if not equal
 
 printDigit:
         cmp     ecx, 0
@@ -123,7 +123,7 @@ printDigit:
 finStr:
         ret
 
-; ---------- printInLn ----------
+; ---------- printIntLn ----------
 ; Imprime enteros en pantalla y agrega salto de linea
 printIntLn:
 	call 	printInt
@@ -143,11 +143,11 @@ printIntLn:
 ; Convierte una cadena a mayusculas
 upCase:
         UCCicle:
-                mov     al, [esi]
+                mov     al, [esi]		; al = registro de derecha
                 cmp     al, 0
-                je      finStr
+                je      finStr			; je = jump if equal
                 cmp     al, 'a'
-                jl      noMinus
+                jl      noMinus			; jump if less than
 
                 cmp     al, 'z'
                 jg      noMinus
