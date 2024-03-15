@@ -1,5 +1,5 @@
 ; Llamada de comandos del sistema
-; Autor: abemen
+; Autor: lis
 ; Fecha: 20240308
 
 %include 'stdio32.asm'
