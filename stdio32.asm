@@ -215,3 +215,59 @@ Quit:
 	mov	eax, 1
 	int 	80h
 	ret
+
+; ---------- StrLen2(cadena) ----------
+; Longitud de cadena y devuelve en eax
+strLen2:
+	xor     ecx, ecx
+CicloLen:
+    	cmp     byte [esi + ecx], 0
+    	je      returnLen
+    	inc     ecx
+    	jmp     CicloLen
+
+returnLen:
+    	mov     eax, ecx
+    	ret
+
+; ---------- SrtInt ----------
+; Convierte str a int, resibe el parametro en eax y lo devuelve en eax
+convertdecimal:
+        push    ecx
+        push    esi
+        push    ebx
+
+        mov     esi, eax                ;eax = 15 20 +
+        mov     eax, 0
+        mov     ecx, 0
+        mov     edi, 0
+convertidor:
+        mov     ebx, 0                  ;bx, ebx, bl apuntan a la misma direccion
+        mov     bl, [esi + ecx]         ;bl es char
+        cmp     bl, 10
+        je      fin
+        cmp     bl, 0
+        je      fin
+        cmp     bl, 48     	     	;48 es cero en ascii, saltar si bl es menor a cero
+        jl      error
+        cmp     bl, 57          	;57 es nueve en ascii, saltar si bl es mayor a 9
+        jg      error
+        sub     bl, 48         	 	;bl= 49(1) - 48 entonces bl=1 ; segundavuelta = 53(5) - 48 = 5
+        add     eax, ebx        	;eax = eax + ebx entonces eax = 0+1 entonces eax = 1    ; segundavuelta= eax=10 + >
+        mov     ebx, 10         	; ebx = 10
+        mul     ebx             	;eax = eax * ebx entonces eax = 1 * 10 entonces eax= 10         ;segundavuelta = e>
+        inc     ecx             	;ecx = 0+1, inc entonces exc = 1 entonces es como esc++
+        jmp     convertidor
+error:
+        mov     edi, 1
+        jmp     salirconvertidor
+fin:
+        mov     ebx, 10
+        div     ebx
+        jmp     salirconvertidor
+salirconvertidor:
+        pop     ebx
+        pop     esi
+        pop     ecx
+
+        ret
