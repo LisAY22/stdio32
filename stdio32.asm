@@ -4,6 +4,8 @@
 
 SECTION .data
     msg_not_number      db      "El valor no contiene valores validos para numero", 0H
+    clear_str           db      1Bh, '[2J', 1Bh, '[3J', 0h
+    goto_xy_str     	db      1Bh, '[01;01H', 0h
 
 ;--------- int strLen(cadena)---------
 ; recibe cadena en eax y devuelve longitud en eax
@@ -257,3 +259,33 @@ str_to_int:
         pop     ecx             ; Restore ecx
         pop     edx             ; Restore edx
     ret
+
+clrscr:
+        mov             eax, clear_str
+        call            strPrint
+        ret
+
+gotoxy:
+        mov             eax, goto_xy_str
+        mov             ebx, eax
+    .goto_xy_loop:
+        cmp             byte [ebx], 0       ; revisamos si es null
+        jz              .goto_xy_loop_end
+        cmp             byte [ebx], '['
+        je              .goto_xy_set_x
+        cmp             byte [ebx], ';'
+        je              .goto_xy_set_y
+        inc             ebx
+        jmp             .goto_xy_loop
+    .goto_xy_set_y:
+        add             ebx, 2
+        mov             byte [ebx], dl
+        jmp             .goto_xy_loop
+    .goto_xy_set_x:
+        add             ebx, 2
+        mov             byte [ebx], dh
+        jmp             .goto_xy_loop
+    .goto_xy_loop_end:
+        call            strPrint
+        int             80h
+        ret

@@ -13,16 +13,13 @@ SECTION .text
 _start:
 	call 	clrscr
 
-	; ----- Posicion del cursor -----
-	mov	eax, 0C1F
+	mov	dl, 57
+	mov	dh, 57
+
 	call 	gotoxy
 
 	; ----- Imprimir cadena de mensaje -----
 	mov	eax, msg
 	call	strPrintLn
-
-	; ----- Posicionar cursor al final -----
-	mov	eax, 1801h
-	call	gotoxy
 
 	call 	Quit
